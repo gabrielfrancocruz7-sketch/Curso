@@ -78,7 +78,9 @@ class PantallaInicio(Screen):
         integrantes = [
             "FRANCO CRUZ GABRIEL NL.9",
             "FLORES CALZADA MOISES HAZEL NL.8",
-            "CARMEN OROPEZA BRAYAN NL.2"
+            "CARMEN OROPEZA BRAYAN NL.2",
+            "Jiménez Hernández Lizette Gabriela NL.18",
+            "Hernández González Lizbeth NL.16"
         ]
 
         for integrante in integrantes:
