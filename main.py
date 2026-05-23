@@ -149,6 +149,30 @@ class PantallaJuego(Screen):
             # Nivel 10: Sintaxis avanzada (Oraciones compuestas)
             {"pregunta": "10. 'Cuando llegues, llámame'.\n¿Qué tipo de oración subordinada es?",
              "opciones": ["Sustantiva", "Adjetiva", "Adverbial de tiempo"], "correcta": "Adverbial de tiempo"}
+ # Nivel 11: Sinónimos
+{"pregunta": "11. ¿Cuál es un sinónimo de 'feliz'?",
+ "opciones": ["Triste", "Contento", "Enojado"],
+ "correcta": "Contento"},
+
+# Nivel 12: Antónimos
+{"pregunta": "12. ¿Cuál es el antónimo de 'rápido'?",
+ "opciones": ["Lento", "Grande", "Alto"],
+ "correcta": "Lento"},
+
+# Nivel 13: Signos de puntuación
+{"pregunta": "13. ¿Qué signo se usa para hacer una pregunta?",
+ "opciones": ["¿ ?", ".", ","],
+ "correcta": "¿ ?"},
+
+# Nivel 14: Verbos
+{"pregunta": "14. ¿Cuál de las siguientes palabras es un verbo?",
+ "opciones": ["Correr", "Mesa", "Bonito"],
+ "correcta": "Correr"},
+
+# Nivel 15: Comprensión lectora
+{"pregunta": "15. En la oración 'María lee un libro', ¿qué está leyendo María?",
+ "opciones": ["Una mesa", "Un libro", "Una carta"],
+ "correcta": "Un libro"}
         ]
 
         self.indice_actual = 0
