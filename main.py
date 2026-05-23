@@ -8,314 +8,453 @@ from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.clock import Clock
 
-# Fijamos un tamaño de ventana tipo móvil para el diseño
-Window.size = (400, 600)
+# =====================================================
+# CONFIGURACIÓN GENERAL
+# =====================================================
+
+Window.size = (400, 700)
+
+# Fondo pastel bonito
+Window.clearcolor = (0.90, 0.96, 0.95, 1)
 
 
-class BotonRedondeado(Button):
-    """Un botón personalizado con bordes redondeados y colores modernos."""
+# =====================================================
+# BOTÓN PERSONALIZADO
+# =====================================================
 
-    def __init__(self, color_fondo=(0.92, 0.95, 0.98, 1), **kwargs):
+class BotonBonito(Button):
+
+    def __init__(self, color_fondo=(0.65, 0.85, 0.80, 1), **kwargs):
         super().__init__(**kwargs)
-        self.background_color = (0, 0, 0, 0)  # Ocultamos el fondo gris por defecto
-        self.color = (0.1, 0.1, 0.1, 1)  # Texto oscuro para buen contraste
+
+        self.background_color = (0, 0, 0, 0)
+        self.color = (1, 1, 1, 1)
         self.bold = True
+        self.font_size = 17
         self.color_fondo = color_fondo
-        self.bind(pos=self.actualizar_canvas, size=self.actualizar_canvas)
+
+        self.bind(pos=self.actualizar_canvas)
+        self.bind(size=self.actualizar_canvas)
 
     def actualizar_canvas(self, *args):
-        self.canvas.before.clear()
-        with self.canvas.before:
-            Color(*self.color_fondo)
-            RoundedRectangle(pos=self.pos, size=self.size, radius=[15])
 
+        self.canvas.before.clear()
+
+        with self.canvas.before:
+
+            Color(*self.color_fondo)
+
+            RoundedRectangle(
+                pos=self.pos,
+                size=self.size,
+                radius=[35]
+            )
+
+
+# =====================================================
+# PANTALLA DE INICIO
+# =====================================================
 
 class PantallaInicio(Screen):
-    """Pantalla de bienvenida con el título, imagen e integrantes."""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        layout_principal = BoxLayout(orientation='vertical', padding=25, spacing=15)
+        layout = BoxLayout(
+            orientation='vertical',
+            padding=20,
+            spacing=15
+        )
 
-        # Título de la App
+        # TÍTULO
         titulo = Label(
-            text="Curso de Español\nInteractivo",
-            font_size=26,
+            text="🏕️ CAMPAMENTO\nDEL SABER 📚",
+            font_size=30,
             bold=True,
             halign="center",
-            color=(0.15, 0.15, 0.2, 1),
-            size_hint_y=0.15
+            color=(0.15, 0.30, 0.35, 1),
+            size_hint_y=0.18
         )
-        layout_principal.add_widget(titulo)
 
-        # ==========================================
-        # ESPACIO PARA TU IMAGEN
-        # ==========================================
-        # Cambia 'logo_curso.png' por el nombre de tu archivo de imagen.
-        # Si aún no tienes la imagen, Kivy mostrará un cuadro blanco/indicador.
-        self.imagen_presentacion = Image(
+        layout.add_widget(titulo)
+
+        # IMAGEN
+        imagen = Image(
             source='cecytem.jpg',
             allow_stretch=True,
             keep_ratio=True,
-            size_hint_y=0.25
+            size_hint_y=0.30
         )
-        layout_principal.add_widget(self.imagen_presentacion)
 
-        # Bloque de Integrantes de Equipo
-        bloque_integrantes = BoxLayout(orientation='vertical', spacing=5, size_hint_y=0.35)
+        layout.add_widget(imagen)
 
+        # SUBTÍTULO
         subtitulo = Label(
-            text="Integrantes del Equipo:",
-            font_size=16,
+            text="✨ Integrantes del equipo ✨",
+            font_size=18,
             bold=True,
-            color=(0.4, 0.4, 0.4, 1),
-            halign="left"
+            color=(0.25, 0.25, 0.25, 1),
+            size_hint_y=0.08
         )
-        subtitulo.bind(size=subtitulo.setter('text_size'))
-        bloque_integrantes.add_widget(subtitulo)
+
+        layout.add_widget(subtitulo)
 
         integrantes = [
-            "FRANCO CRUZ GABRIEL NL.9",
-            "FLORES CALZADA MOISES HAZEL NL.8",
-            "CARMEN OROPEZA BRAYAN NL.2",
-            "Jiménez Hernández Lizette Gabriela NL.18",
-            "Hernández González Lizbeth NL.16"
+
+            "👤 Franco Cruz Gabriel NL.9",
+            "👤 Flores Calzada Moises Hazel NL.8",
+            "👤 Carmen Oropeza Brayan NL.2",
+            "👤 Jiménez Hernández Lizette Gabriela NL.18",
+            "👤 Hernández González Lizbeth NL.16"
+
         ]
 
         for integrante in integrantes:
+
             lbl = Label(
                 text=integrante,
                 font_size=14,
-                color=(0.2, 0.2, 0.2, 1),
-                halign="left"
+                color=(0.20, 0.20, 0.20, 1),
+                size_hint_y=0.05
             )
-            lbl.bind(size=lbl.setter('text_size'))
-            bloque_integrantes.add_widget(lbl)
 
-        layout_principal.add_widget(bloque_integrantes)
+            layout.add_widget(lbl)
 
-        # Botón para Iniciar
-        btn_iniciar = BotonRedondeado(
-            text="CAMPAMENTO DE PREGUNTAS",
-            font_size=16,
-            color_fondo=(0.22, 0.58, 0.93, 1),
+        # BOTÓN
+        btn_iniciar = BotonBonito(
+            text="🚀 INICIAR AVENTURA",
+            color_fondo=(0.25, 0.60, 0.90, 1),
             size_hint_y=0.12
         )
-        btn_iniciar.color = (1, 1, 1, 1)
-        btn_iniciar.bind(on_press=self.ir_a_preguntas)
 
-        layout_principal.add_widget(btn_iniciar)
-        self.add_widget(layout_principal)
+        btn_iniciar.bind(on_press=self.ir_juego)
 
-    def ir_a_preguntas(self, instance):
-        self.manager.current = 'juego'
+        layout.add_widget(btn_iniciar)
 
+        self.add_widget(layout)
+
+    def ir_juego(self, instance):
+
+        self.manager.current = "juego"
+
+
+# =====================================================
+# PANTALLA DEL JUEGO
+# =====================================================
 
 class PantallaJuego(Screen):
-    """Pantalla dinámica con 10 preguntas de dificultad progresiva."""
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        # Banco de 10 preguntas ordenadas por dificultad creciente
+        self.indice_actual = 0
+        self.correctas = 0
+        self.incorrectas = 0
+
+        # =================================================
+        # PREGUNTAS
+        # =================================================
+
         self.preguntas = [
-            # Nivel 1: Vocabulario básico
-            {"pregunta": "1. ¿Cómo se dice 'Book' en español?", "opciones": ["Mesa", "Libro", "Lápiz"],
-             "correcta": "Libro"},
-            # Nivel 2: Identificación de categorías gramaticales básicas
-            {"pregunta": "2. Identifica el sustantivo en:\n'El perro corre rápido'",
-             "opciones": ["Corre", "Rápido", "Perro"], "correcta": "Perro"},
-            # Nivel 3: Acentuación básica
-            {"pregunta": "3. ¿Cuál palabra lleva acento ortográfico (tilde)?", "opciones": ["Cancion", "Mesa", "Gato"],
-             "correcta": "Cancion"},
-            # Nivel 4: Clasificación de palabras por su acentuación
-            {"pregunta": "4. La palabra 'árbol' es un ejemplo de palabra:",
-             "opciones": ["Aguda", "Grave / Llana", "Esdrújula"], "correcta": "Grave / Llana"},
-            # Nivel 5: Ortografía (Uso de grafías b/v)
-            {"pregunta": "5. Elige la opción redactada correctamente:",
-             "opciones": ["Él iba a cambiar de rumbo", "Él hiba a cambar de rumbo", "Él iba a camviar de rumbo"],
-             "correcta": "Él iba a cambiar de rumbo"},
-            # Nivel 6: Identificación del Sujeto en oraciones complejas
-            {"pregunta": "6. ¿Cuál es el sujeto en:\n'Ayer por la tarde, ellos ganaron el partido'?",
-             "opciones": ["Ayer por la tarde", "El partido", "Ellos"], "correcta": "Ellos"},
-            # Nivel 7: Nexos y conectores lógicos
-            {"pregunta": "7. En 'Estudió mucho, pero no aprobó', el conector 'pero' es:",
-             "opciones": ["Adversativo", "Causal", "Copulativo"], "correcta": "Adversativo"},
-            # Nivel 8: Vicios del lenguaje
-            {"pregunta": "8. ¿Qué vicio se comete en la frase:\n'Sube para arriba'?",
-             "opciones": ["Cacofonía", "Pleonasmo / Redundancia", "Solecismo"], "correcta": "Pleonasmo / Redundancia"},
-            # Nivel 9: Modificadores del predicado (Objeto Directo)
-            {"pregunta": "9. ¿Cuál es el Objeto Directo en:\n'Mariana escribió una carta ayer'?",
-             "opciones": ["Una carta", "Mariana", "Ayer"], "correcta": "Una carta"},
-            # Nivel 10: Sintaxis avanzada (Oraciones compuestas)
-            {"pregunta": "10. 'Cuando llegues, llámame'.\n¿Qué tipo de oración subordinada es?",
-             "opciones": ["Sustantiva", "Adjetiva", "Adverbial de tiempo"], "correcta": "Adverbial de tiempo"}
- # Nivel 11: Sinónimos
-{"pregunta": "11. ¿Cuál es un sinónimo de 'feliz'?",
- "opciones": ["Triste", "Contento", "Enojado"],
- "correcta": "Contento"},
 
-# Nivel 12: Antónimos
-{"pregunta": "12. ¿Cuál es el antónimo de 'rápido'?",
- "opciones": ["Lento", "Grande", "Alto"],
- "correcta": "Lento"},
+            {
+                "pregunta": "📚 1. ¿Cómo se dice 'Book' en español?",
+                "opciones": ["Mesa", "Libro", "Lápiz"],
+                "correcta": "Libro"
+            },
 
-# Nivel 13: Signos de puntuación
-{"pregunta": "13. ¿Qué signo se usa para hacer una pregunta?",
- "opciones": ["¿ ?", ".", ","],
- "correcta": "¿ ?"},
+            {
+                "pregunta": "🐶 2. ¿Cuál es el sustantivo?\n'El perro corre rápido'",
+                "opciones": ["Corre", "Perro", "Rápido"],
+                "correcta": "Perro"
+            },
 
-# Nivel 14: Verbos
-{"pregunta": "14. ¿Cuál de las siguientes palabras es un verbo?",
- "opciones": ["Correr", "Mesa", "Bonito"],
- "correcta": "Correr"},
+            {
+                "pregunta": "✏️ 3. ¿Cuál palabra lleva tilde?",
+                "opciones": ["Canción", "Mesa", "Gato"],
+                "correcta": "Canción"
+            },
 
-# Nivel 15: Comprensión lectora
-{"pregunta": "15. En la oración 'María lee un libro', ¿qué está leyendo María?",
- "opciones": ["Una mesa", "Un libro", "Una carta"],
- "correcta": "Un libro"}
+            {
+                "pregunta": "⚡ 4. ¿Cuál es un sinónimo de feliz?",
+                "opciones": ["Triste", "Contento", "Malo"],
+                "correcta": "Contento"
+            },
 
-# Nivel 16: Uso de mayúsculas
-{"pregunta": "16. ¿Cuál oración está escrita correctamente?",
- "opciones": ["mexico es un país", "México es un país", "méxico Es un país"],
- "correcta": "México es un país"},
+            {
+                "pregunta": "🚗 5. ¿Cuál es el antónimo de rápido?",
+                "opciones": ["Lento", "Grande", "Bonito"],
+                "correcta": "Lento"
+            },
 
-# Nivel 17: Tipos de palabras
-{"pregunta": "17. La palabra 'hermoso' es:",
- "opciones": ["Un sustantivo", "Un adjetivo", "Un verbo"],
- "correcta": "Un adjetivo"},
+            {
+                "pregunta": "📝 6. ¿Cuál palabra está escrita correctamente?",
+                "opciones": ["Hacer", "Aser", "Haser"],
+                "correcta": "Hacer"
+            },
 
-# Nivel 18: Comprensión de lectura
-{"pregunta": "18. ¿Qué hace Juan en la oración:\n'Juan juega fútbol con sus amigos'?",
- "opciones": ["Corre", "Juega fútbol", "Estudia"],
- "correcta": "Juega fútbol"},
+            {
+                "pregunta": "📖 7. ¿Qué está leyendo María?\n'María lee un libro'",
+                "opciones": ["Una carta", "Un libro", "Una mesa"],
+                "correcta": "Un libro"
+            },
 
-# Nivel 19: Ortografía
-{"pregunta": "19. ¿Cuál palabra está escrita correctamente?",
- "opciones": ["Hacer", "Aser", "Haser"],
- "correcta": "Hacer"},
+            {
+                "pregunta": "🌎 8. ¿Cuál oración está correcta?",
+                "opciones": [
+                    "mexico es un país",
+                    "México es un país",
+                    "méxico Es un país"
+                ],
+                "correcta": "México es un país"
+            },
 
-# Nivel 20: Separación silábica
-{"pregunta": "20. ¿Cuántas sílabas tiene la palabra 'computadora'?",
- "opciones": ["3", "4", "5"],
- "correcta": "5"}
+            {
+                "pregunta": "🎨 9. La palabra 'hermoso' es:",
+                "opciones": ["Verbo", "Adjetivo", "Sustantivo"],
+                "correcta": "Adjetivo"
+            },
+
+            {
+                "pregunta": "💻 10. ¿Cuántas sílabas tiene 'computadora'?",
+                "opciones": ["3", "4", "5"],
+                "correcta": "5"
+            }
+
         ]
 
-        self.indice_actual = 0
-        self.buenas = 0
-        self.malas = 0
+        # =================================================
+        # LAYOUT PRINCIPAL
+        # =================================================
 
-        # Layout base
-        self.layout_principal = BoxLayout(orientation='vertical', padding=25, spacing=20)
-
-        # Marcador en tiempo real durante el juego
-        self.marcador_label = Label(
-            text="Correctas: 0 | Incorrectas: 0",
-            font_size=14,
-            color=(0.5, 0.5, 0.5, 1),
-            size_hint_y=0.08
+        self.layout = BoxLayout(
+            orientation='vertical',
+            padding=20,
+            spacing=15
         )
-        self.layout_principal.add_widget(self.marcador_label)
 
-        # Label de la Pregunta
-        self.pregunta_label = Label(
+        # MARCADOR
+        self.lbl_marcador = Label(
+            text="✅ 0 Correctas | ❌ 0 Incorrectas",
+            font_size=15,
+            bold=True,
+            color=(0.2, 0.2, 0.2, 1),
+            size_hint_y=0.07
+        )
+
+        self.layout.add_widget(self.lbl_marcador)
+
+        # PROGRESO
+        self.lbl_progreso = Label(
+            text="Pregunta 1 de 10",
+            font_size=14,
+            bold=True,
+            color=(0.1, 0.5, 0.5, 1),
+            size_hint_y=0.05
+        )
+
+        self.layout.add_widget(self.lbl_progreso)
+
+        # PREGUNTA
+        self.lbl_pregunta = Label(
+            text="",
+            font_size=23,
+            bold=True,
+            halign="center",
+            valign="middle",
+            color=(0.1, 0.2, 0.25, 1),
+            size_hint_y=0.22
+        )
+
+        self.lbl_pregunta.bind(
+            size=self.lbl_pregunta.setter('text_size')
+        )
+
+        self.layout.add_widget(self.lbl_pregunta)
+
+        # OPCIONES
+        self.layout_opciones = BoxLayout(
+            orientation='vertical',
+            spacing=14,
+            size_hint_y=0.45
+        )
+
+        self.layout.add_widget(self.layout_opciones)
+
+        # FEEDBACK
+        self.lbl_feedback = Label(
             text="",
             font_size=20,
             bold=True,
-            color=(0.15, 0.15, 0.2, 1),
-            size_hint_y=0.22,
-            halign="center"
+            size_hint_y=0.12
         )
-        self.pregunta_label.bind(size=self.pregunta_label.setter('text_size'))
-        self.layout_principal.add_widget(self.pregunta_label)
 
-        # Contenedor para botones de opciones
-        self.layout_opciones = BoxLayout(orientation='vertical', spacing=12, size_hint_y=0.52)
-        self.layout_principal.add_widget(self.layout_opciones)
+        self.layout.add_widget(self.lbl_feedback)
 
-        # Label de Retroalimentación
-        self.feedback_label = Label(text="", font_size=18, bold=True, size_hint_y=0.18)
-        self.layout_principal.add_widget(self.feedback_label)
+        self.add_widget(self.layout)
 
-        self.add_widget(self.layout_principal)
         self.cargar_pregunta()
+
+    # =================================================
+    # CARGAR PREGUNTA
+    # =================================================
 
     def cargar_pregunta(self):
-        self.feedback_label.text = ""
+
         self.layout_opciones.clear_widgets()
 
+        self.lbl_feedback.text = ""
+
         if self.indice_actual < len(self.preguntas):
-            # Actualizamos el marcador superior
-            self.marcador_label.text = f"Correctas: {self.buenas} | Incorrectas: {self.malas}"
 
-            datos_pregunta = self.preguntas[self.indice_actual]
-            self.pregunta_label.text = datos_pregunta["pregunta"]
+            datos = self.preguntas[self.indice_actual]
 
-            for opcion in datos_pregunta["opciones"]:
-                btn = BotonRedondeado(text=opcion, font_size=16)
-                btn.bind(on_press=self.verificar_respuesta)
-                self.layout_opciones.add_widget(btn)
-        else:
-            # Fin del juego: Mostramos resultados y el botón para regresar
-            self.marcador_label.text = ""
-            self.pregunta_label.text = f"¡Campamento Terminado! 🎉\n\nResultados finales:"
+            self.lbl_pregunta.text = datos["pregunta"]
 
-            # Label con el desglose de puntos
-            lbl_puntos = Label(
-                text=f"✅ Buenas: {self.buenas}\n❌ Malas: {self.malas}",
-                font_size=22,
-                bold=True,
-                color=(0.2, 0.2, 0.3, 1),
-                halign="center"
+            self.lbl_progreso.text = (
+                f"⭐ Pregunta {self.indice_actual + 1} de {len(self.preguntas)}"
             )
-            self.layout_opciones.add_widget(lbl_puntos)
 
-            # Botón para regresar al inicio (Reinicia el estado)
-            btn_volver = BotonRedondeado(text="Regresar al Inicio", font_size=18, color_fondo=(0.2, 0.2, 0.2, 1))
-            btn_volver.color = (1, 1, 1, 1)
-            btn_volver.bind(on_press=self.reiniciar_todo)
-            self.layout_opciones.add_widget(btn_volver)
+            self.lbl_marcador.text = (
+                f"✅ {self.correctas} Correctas | "
+                f"❌ {self.incorrectas} Incorrectas"
+            )
+
+            for opcion in datos["opciones"]:
+
+                btn = BotonBonito(
+                    text=opcion,
+                    color_fondo=(0.45, 0.75, 0.70, 1)
+                )
+
+                btn.bind(on_press=self.verificar_respuesta)
+
+                self.layout_opciones.add_widget(btn)
+
+        else:
+
+            self.mostrar_resultados()
+
+    # =================================================
+    # VERIFICAR RESPUESTA
+    # =================================================
 
     def verificar_respuesta(self, instance):
-        correcta = self.preguntas[self.indice_actual]["correcta"]
 
-        if instance.text == correcta:
-            self.buenas += 1
-            self.feedback_label.text = "¡Correcto! 🎉"
-            self.feedback_label.color = (0.15, 0.68, 0.37, 1)  # Verde
-            self.layout_opciones.disabled = True
-            Clock.schedule_once(self.avanzar_pregunta, 1.2)
+        respuesta_usuario = instance.text
+
+        respuesta_correcta = (
+            self.preguntas[self.indice_actual]["correcta"]
+        )
+
+        if respuesta_usuario == respuesta_correcta:
+
+            self.correctas += 1
+
+            self.lbl_feedback.text = "✅ ¡Correcto!"
+            self.lbl_feedback.color = (0, 0.6, 0, 1)
+
         else:
-            self.malas += 1
-            self.feedback_label.text = f"Inténtalo de nuevo ❌\n(Era: {correcta})"
-            self.feedback_label.color = (0.90, 0.30, 0.26, 1)  # Rojo
-            self.layout_opciones.disabled = True
-            Clock.schedule_once(self.avanzar_pregunta, 1.8)
 
-    def avanzar_pregunta(self, dt):
-        self.layout_opciones.disabled = False
+            self.incorrectas += 1
+
+            self.lbl_feedback.text = (
+                f"❌ Incorrecto\nRespuesta: {respuesta_correcta}"
+            )
+
+            self.lbl_feedback.color = (1, 0, 0, 1)
+
         self.indice_actual += 1
-        self.cargar_pregunta()
 
-    def reiniciar_todo(self, instance):
+        Clock.schedule_once(
+            lambda dt: self.cargar_pregunta(),
+            1.5
+        )
+
+    # =================================================
+    # RESULTADOS
+    # =================================================
+
+    def mostrar_resultados(self):
+
+        self.layout_opciones.clear_widgets()
+
+        self.lbl_progreso.text = "🏁 Juego terminado"
+
+        self.lbl_pregunta.text = "🎉 ¡CAMPAMENTO SUPERADO! 🎉"
+
+        self.lbl_marcador.text = ""
+
+        # NIVEL
+        if self.correctas == 10:
+
+            nivel = "👑 Nivel Maestro"
+
+        elif self.correctas >= 7:
+
+            nivel = "🔥 Nivel Avanzado"
+
+        elif self.correctas >= 5:
+
+            nivel = "⭐ Nivel Medio"
+
+        else:
+
+            nivel = "📚 Sigue practicando"
+
+        self.lbl_feedback.text = (
+            f"✅ Correctas: {self.correctas}\n"
+            f"❌ Incorrectas: {self.incorrectas}\n\n"
+            f"{nivel}"
+        )
+
+        self.lbl_feedback.color = (0.15, 0.3, 0.5, 1)
+
+        # BOTÓN REINICIAR
+        btn_reiniciar = BotonBonito(
+            text="🔄 VOLVER A JUGAR",
+            color_fondo=(0.20, 0.65, 0.45, 1),
+            size_hint_y=None,
+            height=60
+        )
+
+        btn_reiniciar.bind(on_press=self.reiniciar)
+
+        self.layout_opciones.add_widget(btn_reiniciar)
+
+    # =================================================
+    # REINICIAR
+    # =================================================
+
+    def reiniciar(self, instance):
+
         self.indice_actual = 0
-        self.buenas = 0
-        self.malas = 0
+        self.correctas = 0
+        self.incorrectas = 0
+
         self.cargar_pregunta()
-        self.manager.current = 'inicio'
 
 
-class CursoEspanolApp(App):
+# =====================================================
+# APP PRINCIPAL
+# =====================================================
+
+class CampamentoDelSaber(App):
+
     def build(self):
-        Window.clearcolor = (0.98, 0.98, 0.98, 1)
 
         sm = ScreenManager()
-        sm.add_widget(PantallaInicio(name='inicio'))
-        sm.add_widget(PantallaJuego(name='juego'))
+
+        sm.add_widget(PantallaInicio(name="inicio"))
+        sm.add_widget(PantallaJuego(name="juego"))
 
         return sm
 
 
+# =====================================================
+# EJECUTAR APP
+# =====================================================
+
 if __name__ == "__main__":
-    CursoEspanolApp().run()
+
+    CampamentoDelSaber().run()
