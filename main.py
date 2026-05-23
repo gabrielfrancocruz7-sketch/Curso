@@ -6,21 +6,13 @@ from kivy.uix.image import Image
 from kivy.graphics import Color, RoundedRectangle
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.clock import Clock
-
-# =====================================================
-# CONFIGURACIÓN GENERAL
-# =====================================================
+from kivy.clock import 
 
 Window.size = (400, 700)
 
-# Fondo pastel bonito
 Window.clearcolor = (0.90, 0.96, 0.95, 1)
 
 
-# =====================================================
-# BOTÓN PERSONALIZADO
-# =====================================================
 
 class BotonBonito(Button):
 
