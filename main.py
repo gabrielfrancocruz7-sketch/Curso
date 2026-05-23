@@ -173,6 +173,31 @@ class PantallaJuego(Screen):
 {"pregunta": "15. En la oración 'María lee un libro', ¿qué está leyendo María?",
  "opciones": ["Una mesa", "Un libro", "Una carta"],
  "correcta": "Un libro"}
+
+# Nivel 16: Uso de mayúsculas
+{"pregunta": "16. ¿Cuál oración está escrita correctamente?",
+ "opciones": ["mexico es un país", "México es un país", "méxico Es un país"],
+ "correcta": "México es un país"},
+
+# Nivel 17: Tipos de palabras
+{"pregunta": "17. La palabra 'hermoso' es:",
+ "opciones": ["Un sustantivo", "Un adjetivo", "Un verbo"],
+ "correcta": "Un adjetivo"},
+
+# Nivel 18: Comprensión de lectura
+{"pregunta": "18. ¿Qué hace Juan en la oración:\n'Juan juega fútbol con sus amigos'?",
+ "opciones": ["Corre", "Juega fútbol", "Estudia"],
+ "correcta": "Juega fútbol"},
+
+# Nivel 19: Ortografía
+{"pregunta": "19. ¿Cuál palabra está escrita correctamente?",
+ "opciones": ["Hacer", "Aser", "Haser"],
+ "correcta": "Hacer"},
+
+# Nivel 20: Separación silábica
+{"pregunta": "20. ¿Cuántas sílabas tiene la palabra 'computadora'?",
+ "opciones": ["3", "4", "5"],
+ "correcta": "5"}
         ]
 
         self.indice_actual = 0
